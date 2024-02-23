@@ -1,18 +1,33 @@
 const gameBoard = (function initGameBoard() {
     const boardGrid = [
-        [0, 0, 0],
-        [, 1, 1 ],
-        [1, 0 , 1],
+        [0, 1, 0],
+        [0, 1, 1 ],
+        [1, 1 , 1],
     ];
     let turnCounter = 2;
     return {boardGrid, turnCounter};
 })();
 
-console.log(gameBoard.turnCounter);
-function controlGameFlow() {
+const players =  (function createPlayers () {
+    function player(mark, name, highlight) {
+        let playerMark = mark;
+        let playerName = name;
+        let playerWinStatus = false;
+        let playerHighlight = highlight;
+        return {playerMark, playerName, playerWinStatus, playerHighlight};
+    }
 
+    const player1 = player('X', 'jedan', true);
+    const player2 = player('O', 'dva', false);
+
+    return {player1,  player2};
+})();
+
+function controlGameFlow() {
     function checkForTie() {
-        //turnCounter >= 9
+        if (gameBoard.turnCounter = 11) {
+            console.log('TIE');
+        };
     }
 
     function checkWinConditions() {
@@ -81,19 +96,18 @@ function controlGameFlow() {
     return{checkWinConditions};
 }
 
-function controlBoardDisplay() {
+const boardDisplay = (function controlBoardDisplay() {
     const boardGridDisplay = document.querySelectorAll('.gameboard > div');
-    let turnCounter = gameBoard.turnCounter;
     function writeMarkValues () {
-        if (turnCounter % 2 === 0) {
-        //elements of an array  or  array-like structure are considered objects
-            this.innerText = 'X';
+        if (gameBoard.turnCounter % 2 === 0) {
+        //elements of an array  or  array-like structure are considered objects, so 'this' works
+            this.innerText = players.player1.playerMark;
             this.removeEventListener('click', writeMarkValues);
         } else {
-            this.innerText = 'O';
+            this.innerText = players.player2.playerMark;
             this.removeEventListener('click', writeMarkValues);
         };
-        return turnCounter++;
+        return gameBoard.turnCounter++;
     }
     function handlePlayerInput() {
         boardGridDisplay.forEach(element => {
@@ -102,9 +116,10 @@ function controlBoardDisplay() {
         console.log(boardGridDisplay);
     }
     handlePlayerInput();
-}
 
-controlBoardDisplay();
+    return {boardGridDisplay};
+})();
+
 
 const winCondition = controlGameFlow();
 winCondition.checkWinConditions();
