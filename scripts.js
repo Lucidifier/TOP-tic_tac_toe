@@ -1,14 +1,14 @@
-const gameBoard = (function initGameBoard() {
+const gameBoard = (function() {
     const boardGrid = [
-        [0, 1, 0],
-        [0, 1, 1 ],
-        [1, 1 , 1],
+        ['','',''],
+        ['','',''],
+        ['','',''],
     ];
     let turnCounter = 2;
     return {boardGrid, turnCounter};
 })();
 
-const players =  (function createPlayers () {
+const players =  (function () {
     function player(mark, name, highlight) {
         let playerMark = mark;
         let playerName = name;
@@ -96,29 +96,50 @@ function controlGameFlow() {
     return{checkWinConditions};
 }
 
-const boardDisplay = (function controlBoardDisplay() {
+const boardDisplay = (function () {
     const boardGridDisplay = document.querySelectorAll('.gameboard > div');
+    let i;
+    let j;
+    let writeToGrid = function () {
+            console.log(this);
+            i = this.dataset.i;
+            console.log(this.dataset.i);
+            j = this.dataset.j;
+            console.log(this.dataset.j);
+            if(this.innerText === players.player1.playerMark) {
+                gameBoard.boardGrid[i][j] = 0;
+            } else if (this.innerText === players.player2.playerMark) {
+                gameBoard.boardGrid[i][j] = 1;
+            };
+        }
+
     function writeMarkValues () {
+        console.log(this);
+        let bWriteToGrid = writeToGrid.bind(this); 
         if (gameBoard.turnCounter % 2 === 0) {
         //elements of an array  or  array-like structure are considered objects, so 'this' works
             this.innerText = players.player1.playerMark;
+            bWriteToGrid();
             this.removeEventListener('click', writeMarkValues);
+            console.log(gameBoard.boardGrid);
         } else {
             this.innerText = players.player2.playerMark;
+            bWriteToGrid();
             this.removeEventListener('click', writeMarkValues);
+            console.log(gameBoard.boardGrid);
         };
         return gameBoard.turnCounter++;
     }
     function handlePlayerInput() {
         boardGridDisplay.forEach(element => {
-           element.addEventListener('click', writeMarkValues)
+            element.addEventListener('click', writeMarkValues);
         });
         console.log(boardGridDisplay);
     }
     handlePlayerInput();
-
-    return {boardGridDisplay};
+    
 })();
+
 
 
 const winCondition = controlGameFlow();
