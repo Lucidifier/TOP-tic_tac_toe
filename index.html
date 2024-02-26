@@ -11,33 +11,46 @@
 <body>
     <div class="container">
 
-        <div class="menu">
-            <p>Enter player names</p>
-            <div class="name_inputs">
-                <div>
-                    <label for="name_p1">Player One</label>
-                    <br>
-                    <input type="text" id="name_p1" name="name_p1" maxlength="10">
+        <div class="container_menu">
+            <div class="menu">
+                <p>Enter player names</p>
+                <div class="name_inputs">
+                    <div>
+                        <label for="name_p1">Player One</label>
+                        <br>
+                        <input type="text" id="name_p1" name="name_p1" maxlength="10">
+                    </div>
+                    <div>
+                        <label for="name_p1">Player Two</label>
+                        <br>
+                        <input type="text" id="name_p2" name="name_p2" maxlength="10">
+                    </div>
                 </div>
-                <div>
-                    <label for="name_p1">Player Two</label>
-                    <br>
-                    <input type="text" id="name_p2" name="name_p2" maxlength="10">
-                </div>
+                <p>Start</p>
             </div>
-            <p>Start</p>
         </div>
 
-        <div class="gameboard">
-            <div data-i="0" data-j="0"></div>
-            <div data-i="0" data-j="1"></div>
-            <div data-i="0" data-j="2"></div>
-            <div data-i="1" data-j="0"></div>
-            <div data-i="1" data-j="1"></div>
-            <div data-i="1" data-j="2"></div>
-            <div data-i="2" data-j="0"></div>
-            <div data-i="2" data-j="1"></div>
-            <div data-i="2" data-j="2"></div>
+        <div class="container_game_screen">
+            <div class="game_screen">
+                <div class="gameboard">
+                    <div data-i="0" data-j="0"></div>
+                    <div data-i="0" data-j="1"></div>
+                    <div data-i="0" data-j="2"></div>
+                    <div data-i="1" data-j="0"></div>
+                    <div data-i="1" data-j="1"></div>
+                    <div data-i="1" data-j="2"></div>
+                    <div data-i="2" data-j="0"></div>
+                    <div data-i="2" data-j="1"></div>
+                    <div data-i="2" data-j="2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container_end_game_screen">
+            <div class="end_game_screen">
+                <p>Player Wins!</p>
+                <p>Play Again</p>
+            </div>
         </div>
     </div>
 </body>

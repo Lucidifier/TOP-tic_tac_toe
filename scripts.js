@@ -5,10 +5,21 @@ const gameBoard = (function() {
         ['','',''],
     ];
     let turnCounter = 2;
-    return {boardGrid, turnCounter};
+
+    function resetboardGrid () {
+        for (let i = 0; i < boardGrid.length; i++) {
+            for (let j = 0; j < boardGrid[i].length; j++) {
+                boardGrid[i][j] = '';
+                console.log(boardGrid);
+            }
+        }
+        boardDisplay.handlePlayerInput();
+        }
+    return {boardGrid, turnCounter, resetboardGrid};
 })();
 
 const players =  (function () {
+    const inputedP1Name = document.querySelector('')
     function player(mark, name, highlight) {
         let playerMark = mark;
         let playerName = name;
@@ -33,6 +44,7 @@ const gameFlow = (function () {
         const c3 = gameBoard.boardGrid[0][2] + gameBoard.boardGrid[1][2] + gameBoard.boardGrid[2][2];
         const d1 = gameBoard.boardGrid[0][0] + gameBoard.boardGrid[1][1] + gameBoard.boardGrid[2][2];
         const d2 = gameBoard.boardGrid[2][0] + gameBoard.boardGrid[1][1] + gameBoard.boardGrid[0][2];
+        const gameResult = displayFlow.showEndGameScreen;
         if ((r1 === 0) || (r1 === 3)) {
             if(r1 === 0) {
                  console.log('player1 wins');
@@ -82,8 +94,9 @@ const gameFlow = (function () {
                 console.log('player2 wins')
             };
         } else if (gameBoard.turnCounter === 10) {
-            console.log('TIE');
-        } else {return};
+            console.log('tie');
+            gameResult();0
+0        } else {return};
         } 
     return{checkWinConditions};
 })();
@@ -119,6 +132,7 @@ const boardDisplay = (function () {
             this.removeEventListener('click', writeMarkValues);
             console.log(gameBoard.boardGrid);
         };
+        console.log(gameBoard.turnCounter);
         return gameBoard.turnCounter++;
     }
     function handlePlayerInput() {
@@ -127,5 +141,51 @@ const boardDisplay = (function () {
         });
     }
     handlePlayerInput();
+    return{boardGridDisplay, handlePlayerInput};
+})();
+
+const displayFlow = (function () {
+
+    const menuContainer = document.querySelector('.container_menu');
+    const gameScreenContainer = document.querySelector('.container_game_screen')
+    const endGameScreenContainer = document.querySelector('.container_end_game_screen');
+    const startBtn = document.querySelector('.menu > p:nth-of-type(2)');
+    const restartButton = document.querySelector('.end_game_screen > p:nth-of-type(2)')
+
+    function generateInitialUI () {
+        gameScreenContainer.classList.toggle('hideClass');
+        endGameScreenContainer.classList.toggle('hideClass');
+    }
+
+    function resetBoardDisplay () {
+        boardDisplay.boardGridDisplay.forEach(element => {
+            element.innerText = '';
+        })
+    }
     
+    function hideMenu () {
+        menuContainer.classList.toggle('hideClass');
+        gameScreenContainer.classList.toggle('hideClass');
+    }
+    function hideEndGameScreen () {
+        endGameScreenContainer.classList.toggle('hideClass');
+        menuContainer.classList.toggle('hideClass');
+        resetBoardDisplay();
+        gameBoard.resetboardGrid();
+        gameBoard.turnCounter = 2;
+    }
+    function startGame () {
+        startBtn.addEventListener('click', hideMenu);
+        }
+    function showEndGameScreen () {
+        gameScreenContainer.classList.toggle('hideClass');
+        endGameScreenContainer.classList.toggle('hideClass');
+    }
+    function restartGame () {
+        restartButton.addEventListener('click', hideEndGameScreen);
+    }
+    generateInitialUI();    
+    startGame();
+    restartGame();
+    return {showEndGameScreen};
 })();
