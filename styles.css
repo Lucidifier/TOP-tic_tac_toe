@@ -35,6 +35,14 @@ html {
   :root {
     --color-primary: #0B60B0;
     --color-secondary: #000000;
+    --color-tertiary: #40A2D8;
+
+    --font-size-one: 4rem;
+    --font-size-one-highlight: 6rem;
+    --font-size-two: 2rem;
+    --font-size-three: 6rem;
+
+    --font-family-primary: "Permanent Marker", cursive;
   }
 
 .container {
@@ -52,6 +60,65 @@ html {
   
 }
 
+.menu {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 0rem;
+  font-size: var(--font-size-one);
+  font-family: var(--font-family-primary);
+  color: var(--color-primary);
+  user-select: none;
+}
+
+.menu > p:nth-of-type(1):hover {
+  cursor: default;
+}
+
+.name_inputs {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-self: center;
+  font-size: var(--font-size-two);
+}
+
+.name_inputs > div {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 0.2fr));
+}
+
+.name_inputs > div > label {
+  justify-self: center;
+}
+
+.name_inputs > div > input {
+  width: 15rem;
+  height: 2rem;
+  border: 0;
+  border-bottom: 0.4rem  solid var(--color-primary);
+  font-size: var(--font-size-two);
+  font-family: var(--font-family-primary);
+  color: var(--color-primary);
+  padding-left: 2rem;
+}
+
+.name_inputs > div > input:focus {
+  color: var(--color-tertiary);
+  outline: 0;
+  border-bottom: 0.4rem solid var(--color-tertiary);
+  padding-left: 2rem;
+}
+
+.menu > p:nth-of-type(2) {
+  justify-self: center;
+  font-size: var(--font-size-one-highlight);
+}
+
+.menu > p:nth-of-type(2):hover {
+  color:  var(--color-tertiary);
+  cursor: default;
+}
+
 .gameboard {
     width: 500px;
     height: 500px;
@@ -63,11 +130,11 @@ html {
 }
 
 .gameboard > div {
-  font-family: "Permanent Marker", cursive;
+  font-family: var(--font-family-primary);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 6rem;
+  font-size: var(--font-size-three);
   color: var(--color-primary);
 }
 
