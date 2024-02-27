@@ -199,6 +199,7 @@ html {
   font-family: var(--font-family-primary);
   cursor: default;
   user-select: none;
+  justify-items: center;
 }
 
 .end_game_screen > p:nth-of-type(2) {

@@ -10,7 +10,6 @@ const gameBoard = (function() {
         for (let i = 0; i < boardGrid.length; i++) {
             for (let j = 0; j < boardGrid[i].length; j++) {
                 boardGrid[i][j] = '';
-                console.log(boardGrid);
             }
         }
         boardDisplay.handlePlayerInput();
@@ -38,10 +37,15 @@ const players =  (function () {
         displayedP2Name.innerText = players.player2.playerName;
     }
 
+    function resetPlayerNameInputs () {
+        inputedP1Name.value = '';
+        inputedP2Name.value = '';
+    }
+
     const player1 = player('X','', true);
     const player2 = player('O','', false);
 
-    return {player1,  player2, writePlayerName, displayedP1Name, displayedP2Name};
+    return {player1,  player2, writePlayerName, displayedP1Name, displayedP2Name, resetPlayerNameInputs};
 })();
 
 const gameFlow = (function () {
@@ -57,55 +61,72 @@ const gameFlow = (function () {
         const gameResult = displayFlow.showEndGameScreen;
         if ((r1 === 0) || (r1 === 3)) {
             if(r1 === 0) {
-                 console.log('player1 wins');
+                 players.player1.playerWinStatus = true;
+                 gameResult();
             } else if (r1 === 3) {
-                console.log('player2 wins')
+                players.player2.playerWinStatus = true;
+                gameResult();
             };
         } else if ((r2 === 0) || (r2 === 3)) {
                 if(r2 === 0) {
-                     console.log('player1 wins');
+                    players.player1.playerWinStatus = true;
+                    gameResult();
                 } else if (r2 === 3) {
-                     console.log('player2 wins')
+                    players.player2.playerWinStatus = true;
+                    gameResult();
                 };
         } else if ((r3 === 0) || (r3 === 3)) {
                 if(r3 === 0) {
-                     console.log('player1 wins');
+                    players.player1.playerWinStatus = true;
+                    gameResult();
                 } else if (r3 === 3) {
-                     console.log('player2 wins')
+                    players.player2.playerWinStatus = true;
+                    gameResult();
                 };
         } else if ((c1 === 0) || (c1 === 3)) {
             if(c1 === 0) {
-                 console.log('player1 wins');
+                players.player1.playerWinStatus = true;
+                gameResult();
             } else if (c1 === 3) {
-                 console.log('player2 wins')
+                players.player2.playerWinStatus = true;
+                gameResult();
             };
         } else if ((c2 === 0) || (c2 === 3)) {
             if(c2 === 0) {
-                 console.log('player1 wins');
+                players.player1.playerWinStatus = true;
+                gameResult();
             } else if (c2 === 3) {
-                 console.log('player2 wins')
+                players.player2.playerWinStatus = true;
+                gameResult();
             };
         } else if ((c3 === 0) || (c3 === 3)) {
             if(c3 === 0) {
-                console.log('player1 wins');
+                players.player1.playerWinStatus = true;
+                gameResult();
             } else if (c3 === 3) {
-                console.log('player2 wins')
+                players.player2.playerWinStatus = true;
+                gameResult();
             };
         } else if ((d1 === 0) || (d1 === 3)) {
             if(d1 === 0) {
-                console.log('player1 wins');
+                players.player1.playerWinStatus = true;
+                gameResult();
             } else if (d1 === 3) {
-                console.log('player2 wins')
+                players.player2.playerWinStatus = true;
+                gameResult();
             };
         } else if ((d2 === 0) || (d2 === 3)) {
             if(d2 === 0) {
-                 console.log('player1 wins');
+                players.player1.playerWinStatus = true;
+                gameResult();
             } else if (d2 === 3) {
-                console.log('player2 wins')
+                players.player2.playerWinStatus = true;
+                gameResult();
             };
         } else if (gameBoard.turnCounter === 10) {
-            console.log('tie');
-            gameResult();0
+            players.player1.playerWinStatus = false;
+            players.player2.playerWinStatus = false;
+            gameResult();
 0        } else {return};
         } 
     return{checkWinConditions};
@@ -181,6 +202,7 @@ const displayFlow = (function () {
     const endGameScreenContainer = document.querySelector('.container_end_game_screen');
     const startBtn = document.querySelector('.menu > p:nth-of-type(2)');
     const restartButton = document.querySelector('.end_game_screen > p:nth-of-type(2)')
+    const winnerDisplay = document.querySelector('#winner');
 
     function generateInitialUI () {
         gameScreenContainer.classList.toggle('hideClass');
@@ -204,7 +226,10 @@ const displayFlow = (function () {
         menuContainer.classList.toggle('hideClass');
         resetBoardDisplay();
         gameBoard.resetboardGrid();
+        players.resetPlayerNameInputs();
         gameBoard.turnCounter = 2;
+        players.player1.playerWinStatus = false;
+        players.player2.playerWinStatus = false;
     }
     function startGame () {
         startBtn.addEventListener('click', hideMenu);
@@ -212,6 +237,13 @@ const displayFlow = (function () {
     function showEndGameScreen () {
         gameScreenContainer.classList.toggle('hideClass');
         endGameScreenContainer.classList.toggle('hideClass');
+        if (players.player1.playerWinStatus) {
+            winnerDisplay.innerText = `${players.player1.playerName} Wins!`
+        } else if (players.player2.playerWinStatus) {
+            winnerDisplay.innerText = `${players.player2.playerName} Wins!`
+        } else {
+            winnerDisplay.innerText = `It's a tie!`;
+        }
     }
     function restartGame () {
         restartButton.addEventListener('click', hideEndGameScreen);
