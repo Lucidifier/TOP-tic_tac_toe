@@ -19,7 +19,10 @@ const gameBoard = (function() {
 })();
 
 const players =  (function () {
-    const inputedP1Name = document.querySelector('')
+    const inputedP1Name = document.getElementById('name_p1');
+    const inputedP2Name = document.querySelector('#name_p2');
+    const displayedP1Name = document.querySelector('.game_screen > div > p:nth-child(1)');
+    const displayedP2Name = document.querySelector('.game_screen > div > p:nth-child(3)')
     function player(mark, name, highlight) {
         let playerMark = mark;
         let playerName = name;
@@ -28,10 +31,17 @@ const players =  (function () {
         return {playerMark, playerName, playerWinStatus, playerHighlight};
     }
 
-    const player1 = player('X', 'jedan', true);
-    const player2 = player('O', 'dva', false);
+    function writePlayerName () {
+        player1.playerName = inputedP1Name.value;
+        player2.playerName = inputedP2Name.value;
+        displayedP1Name.innerText = players.player1.playerName;
+        displayedP2Name.innerText = players.player2.playerName;
+    }
 
-    return {player1,  player2};
+    const player1 = player('X','', true);
+    const player2 = player('O','', false);
+
+    return {player1,  player2, writePlayerName, displayedP1Name, displayedP2Name};
 })();
 
 const gameFlow = (function () {
@@ -105,6 +115,7 @@ const boardDisplay = (function () {
     const boardGridDisplay = document.querySelectorAll('.gameboard > div');
     let i;
     let j;
+
     let writeToGrid = function () {
             i = this.dataset.i;
             j = this.dataset.j;
@@ -124,24 +135,43 @@ const boardDisplay = (function () {
             bWriteToGrid();
             gameFlow.checkWinConditions();
             this.removeEventListener('click', writeMarkValues);
-            console.log(gameBoard.boardGrid);
         } else {
             this.innerText = players.player2.playerMark;
             bWriteToGrid();
             gameFlow.checkWinConditions();
             this.removeEventListener('click', writeMarkValues);
-            console.log(gameBoard.boardGrid);
         };
         console.log(gameBoard.turnCounter);
-        return gameBoard.turnCounter++;
+        gameBoard.turnCounter++;
+        highlightCurrentPlayer();
     }
     function handlePlayerInput() {
         boardGridDisplay.forEach(element => {
             element.addEventListener('click', writeMarkValues);
         });
     }
+
+    function highlightCurrentPlayer () {
+        
+        if (gameBoard.turnCounter % 2 == 0) {
+            players.player1.highlight = true;
+            players.player2.highlight = false;
+        } else {
+            players.player1.highlight = false;
+            players.player2.highlight = true;
+        }
+        if (players.player1.highlight === true) {
+            players.displayedP1Name.classList.add('highlightClass');
+            players.displayedP2Name.classList.remove('highlightClass');
+        } else {
+            players.displayedP1Name.classList.remove('highlightClass');
+            players.displayedP2Name.classList.add('highlightClass');
+        }
+        }
+        
+
     handlePlayerInput();
-    return{boardGridDisplay, handlePlayerInput};
+    return{boardGridDisplay, handlePlayerInput, highlightCurrentPlayer};
 })();
 
 const displayFlow = (function () {
@@ -166,6 +196,8 @@ const displayFlow = (function () {
     function hideMenu () {
         menuContainer.classList.toggle('hideClass');
         gameScreenContainer.classList.toggle('hideClass');
+        players.writePlayerName();
+        boardDisplay.highlightCurrentPlayer();
     }
     function hideEndGameScreen () {
         endGameScreenContainer.classList.toggle('hideClass');
