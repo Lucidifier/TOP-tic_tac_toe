@@ -162,7 +162,6 @@ const boardDisplay = (function () {
             gameFlow.checkWinConditions();
             this.removeEventListener('click', writeMarkValues);
         };
-        console.log(gameBoard.turnCounter);
         gameBoard.turnCounter++;
         highlightCurrentPlayer();
     }
